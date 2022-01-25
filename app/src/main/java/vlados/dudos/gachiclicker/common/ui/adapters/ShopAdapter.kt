@@ -41,7 +41,7 @@ class ShopAdapter(
         b.txtNameShopItem.text = shopList[position].nameItem
         b.txtDescShopItem.text = shopList[position].description
         b.priceTxt.text = "${cutNum(shopList[position].price)} cum"
-
+        b.txtLevel.text = "${shopList[position].level} куплено"
 
         b.buyTxt.setOnClickListener {
             if (currentCum >= shopList[position].price) {
@@ -53,7 +53,7 @@ class ShopAdapter(
                     }
                     else -> updateCPS(shopList[position].cpsBuff)
                 }
-            }
+            } else Toast.makeText(context, "У Fucking Slave не хватает cum", Toast.LENGTH_SHORT).show()
         }
     }
 

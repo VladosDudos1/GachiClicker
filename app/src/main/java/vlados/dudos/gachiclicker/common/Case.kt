@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import vlados.dudos.gachiclicker.app.App
 import vlados.dudos.gachiclicker.common.ui.models.Boss
 import vlados.dudos.gachiclicker.common.ui.models.ShopItem
+import java.lang.Exception
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import kotlin.math.pow
@@ -76,7 +77,11 @@ object Case {
                         .get()
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                level = task.result.data?.get("si$iteration").toString().toInt()
+                                try{
+                                    level = task.result.data?.get("si$iteration").toString().toInt()
+                                } catch (e: Exception){
+                                    user.update("si$iteration", 0)
+                                }
                                 shopList.add(
                                     ShopItem(
                                         i["img"].toString(),

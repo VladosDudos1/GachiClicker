@@ -35,13 +35,14 @@ class GameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         b = ActivityGameBinding.inflate(layoutInflater)
+        setContentView(b.root)
+
         getUserCum(App.dm.getUserMail())
         updateDate()
+        updateShop()
+
         fragmentTransaction(GameFragment())
-        setContentView(b.root)
 
         b.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -74,7 +75,6 @@ class GameActivity : AppCompatActivity() {
         mediaPlayer = MediaPlayer.create(this, R.raw.minecraft_rv)
         mediaPlayer.setVolume(0.07f, 0.07f)
         cpsThread()
-        updateShop()
     }
 
     override fun onStop() {
@@ -126,8 +126,8 @@ class GameActivity : AppCompatActivity() {
             mediaPlayer.start()
         }
     }
-    private fun getUserCum(str: String){
-        fireBaseFS.collection("Users").document("user:$str")
+    private fun getUserCum(mail: String){
+        fireBaseFS.collection("Users").document("user:$mail")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful){
