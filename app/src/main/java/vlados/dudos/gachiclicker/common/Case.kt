@@ -1,7 +1,5 @@
 package vlados.dudos.gachiclicker.common
 
-import android.content.Context
-import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import vlados.dudos.gachiclicker.app.App
 import vlados.dudos.gachiclicker.common.ui.models.Boss
@@ -77,10 +75,11 @@ object Case {
                         .get()
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                try{
-                                    level = task.result.data?.get("si$iteration").toString().toInt()
+                                level = try{
+                                    task.result.data?.get("si$iteration").toString().toInt()
                                 } catch (e: Exception){
                                     user.update("si$iteration", 0)
+                                    0
                                 }
                                 shopList.add(
                                     ShopItem(

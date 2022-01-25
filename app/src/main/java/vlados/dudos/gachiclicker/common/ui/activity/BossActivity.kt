@@ -21,7 +21,7 @@ class BossActivity : AppCompatActivity() {
     private lateinit var b: ActivityBossBinding
     private lateinit var timer: CountDownTimer
     private var isWin = -1
-    private var boss: Boss = Boss(100000000, -1,false,-1)
+    private var boss: Boss = Boss(100000000, -1, false, -1)
     private lateinit var dialog: AlertDialog
     private lateinit var str: String
     private lateinit var mediaPlayer: MediaPlayer
@@ -61,7 +61,7 @@ class BossActivity : AppCompatActivity() {
                 0 -> {}
                 else -> {
                     boss.bossHP -= 1
-                    b.progressBar.progress-=1
+                    b.progressBar.progress -= 1
                 }
             }
 
@@ -94,39 +94,43 @@ class BossActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                dialog = AlertDialog.Builder(this@BossActivity)
-                    .setTitle("Ohh shit... I`m sorry...")
-                    .setMessage("Your Cum /$str reduced by ${boss.prizeAmount}!")
-                    .setPositiveButton("FUCK!") { dialog, which ->
-                        dialog.dismiss()
-                        onBackPressed()
-                    }
-                    .setCancelable(false)
-                    .show()
+                onBackPressed()
             }
         }
         timer.start()
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         bossResult()
         updateProgress()
         mediaPlayer.stop()
+        dialog = AlertDialog.Builder(this@BossActivity)
+            .setTitle("Ohh shit... I`m sorry...")
+            .setMessage("Your Cum /$str reduced by ${boss.prizeAmount}!")
+            .setPositiveButton("FUCK!") { dialog, which ->
+                dialog.dismiss()
+
+                super.onBackPressed()
+            }
+            .setCancelable(false)
+            .show()
     }
-    private fun updateProgress(){
+
+    private fun updateProgress() {
         loadBoss(bossRikardo)
         b.progressBar.max = boss.bossHP
         b.progressBar.progress = boss.bossHP
         b.txtHp.text = "${boss.bossHP} / ${bossRikardo.bossHP}"
     }
-    private fun loadBoss(bigBoss: Boss){
+
+    private fun loadBoss(bigBoss: Boss) {
         boss.bossHP = bigBoss.bossHP
         boss.prizeAmount = bigBoss.prizeAmount
         boss.isCpc = bigBoss.isCpc
         boss.timeSec = bigBoss.timeSec
     }
-    private fun bossResult(){
+
+    private fun bossResult() {
         if (boss.isCpc)
             updateCPC(isWin * boss.prizeAmount)
         else updateCPS(isWin * boss.prizeAmount)
