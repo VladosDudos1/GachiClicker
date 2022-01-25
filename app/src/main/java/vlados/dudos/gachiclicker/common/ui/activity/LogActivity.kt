@@ -47,7 +47,7 @@ class LogActivity : AppCompatActivity() {
                 openBiometry()
             }
             else successfulEnter()
-      }, 1000)
+      }, 800)
     }
 
     override fun onBackPressed() {

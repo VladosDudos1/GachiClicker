@@ -3,6 +3,7 @@ package vlados.dudos.gachiclicker.common.ui.activity
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,7 +40,6 @@ class GameActivity : AppCompatActivity() {
         setContentView(b.root)
 
         getUserCum(App.dm.getUserMail())
-        updateDate()
         updateShop()
 
         fragmentTransaction(GameFragment())
@@ -74,6 +74,7 @@ class GameActivity : AppCompatActivity() {
         super.onStart()
         mediaPlayer = MediaPlayer.create(this, R.raw.minecraft_rv)
         mediaPlayer.setVolume(0.07f, 0.07f)
+        updateDate()
         cpsThread()
     }
 
@@ -135,7 +136,7 @@ class GameActivity : AppCompatActivity() {
                     cumPerClick = userData?.get("cpc").toString().toInt()
                     cumPerSecond = userData?.get("cps").toString().toLong()
                     currentCum = userData?.get("currentCum").toString().toLong()
-                }
+                } else Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
             }
     }
 }
