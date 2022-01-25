@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "97743539633",
+    "project_id": "gachiclicker",
+    "storage_bucket": "gachiclicker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97743539633:android:8545384e372757bad74190",
+        "android_client_info": {
+          "package_name": "vlados.dudos.gachiclicker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97743539633-gu3ommfbojf0ooq2p9u88htb0t8cfj2s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP1PNf9zptkHAS1q70M1tvmMnUWJtlgCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97743539633-gu3ommfbojf0ooq2p9u88htb0t8cfj2s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

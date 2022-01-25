@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">GachiClicker</string>
+    <string name="cum">Cum</string>
+    <string name="shop">Shop</string>
+    <string name="settings">Settings</string>
+    <string name="events">Events</string>
+    <string name="tch_works">Ведутся технические penetration</string>
+    <string name="cps">Cum /second\n</string>
+    <string name="current_cum">Current Cum\n</string>
+    <string name="cum_img">cum_img</string>
+    <string name="shop_img">shop_img</string>
+    <string name="current_cpc">Cum /click\n</string>
+    <string name="buy">BUY</string>
+    <string name="use_biometry">Use Biometry</string>
+    <string name="billyherington">BillyHerington</string>
+    <string name="wee_wee_power">Wee-Wee power</string>
+    <string name="bossimage">BossImage</string>
+    <string name="super_power_20_misses">Super power: 20% misses</string>
+    <string name="registration">Registration</string>
+    <string name="penetrate_your_password">Enter your password</string>
+    <string name="authorisation">Authorisation</string>
+    <string name="penetrate_your_email">Enter your email</string>
+    <string name="end_auth">Завершить авторизацию</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="your_nickname">Your Nickname</string>
+    <string name="end_reg">Завершить регистрацию</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="logout">LogOut</string>
+</resources>
