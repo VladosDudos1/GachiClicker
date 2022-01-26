@@ -6,9 +6,10 @@ import android.os.CountDownTimer
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FirebaseFirestore
 import vlados.dudos.gachiclicker.R
-import vlados.dudos.gachiclicker.common.Case.bossImage
-import vlados.dudos.gachiclicker.common.Case.bossRikardo
+import vlados.dudos.gachiclicker.common.Case.boss
+import vlados.dudos.gachiclicker.common.Case.bossDockPath
 import vlados.dudos.gachiclicker.common.Case.updateCPC
 import vlados.dudos.gachiclicker.common.Case.updateCPS
 import vlados.dudos.gachiclicker.common.ui.models.Boss
@@ -21,7 +22,8 @@ class BossActivity : AppCompatActivity() {
     private lateinit var b: ActivityBossBinding
     private lateinit var timer: CountDownTimer
     private var isWin = -1
-    private var boss: Boss = Boss(100000000, -1, false, -1)
+    var bossFB = FirebaseFirestore.getInstance().collection("Bosses").document("boss:$bossDockPath")
+    private var maxHP = 0
     private lateinit var dialog: AlertDialog
     private lateinit var str: String
     private lateinit var mediaPlayer: MediaPlayer
@@ -33,12 +35,10 @@ class BossActivity : AppCompatActivity() {
         setContentView(b.root)
         startBossFight()
         onClick()
-        startTimer()
         startMusic()
     }
 
     private fun startBossFight() {
-        updateProgress()
         uploadBoss()
     }
 
@@ -49,10 +49,27 @@ class BossActivity : AppCompatActivity() {
     }
 
     private fun uploadBoss() {
-        Glide.with(this)
-            .load(bossImage)
-            .into(b.bossImage)
-        str = if (boss.isCpc) "click" else "sec"
+        bossFB
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    boss.bossImg = task.result.data?.get("bossImg").toString()
+                    boss.bossHP = task.result.data?.get("bossHP").toString().toInt()
+                    maxHP = task.result.data?.get("bossHP").toString().toInt()
+                    boss.isCpc = task.result.data?.get("isCpc").toString().toBoolean()
+                    boss.prizeAmount = task.result.data?.get("prizeAmout").toString().toInt()
+                    boss.timeSec = task.result.data?.get("timeSec").toString().toInt()
+
+                    Glide.with(this)
+                        .load(boss.bossImg)
+                        .into(b.bossImage)
+                    str = if (boss.isCpc) "click" else "sec"
+
+                    updateProgress()
+
+                    startTimer()
+                }
+            }
     }
 
     private fun onClick() {
@@ -65,7 +82,7 @@ class BossActivity : AppCompatActivity() {
                 }
             }
 
-            b.txtHp.text = "${boss.bossHP} / ${bossRikardo.bossHP}"
+            b.txtHp.text = "${boss.bossHP} / ${maxHP}"
             if (boss.bossHP == 0) {
                 isWin = 1
                 timer.cancel()
@@ -104,23 +121,25 @@ class BossActivity : AppCompatActivity() {
         bossResult()
         updateProgress()
         mediaPlayer.stop()
-        dialog = AlertDialog.Builder(this@BossActivity)
-            .setTitle("Ohh shit... I`m sorry...")
-            .setMessage("Your Cum /$str reduced by ${boss.prizeAmount}!")
-            .setPositiveButton("FUCK!") { dialog, which ->
-                dialog.dismiss()
-
-                super.onBackPressed()
-            }
-            .setCancelable(false)
-            .show()
+        if (isWin == -1) {
+            dialog = AlertDialog.Builder(this@BossActivity)
+                .setTitle("Ohh shit... I`m sorry...")
+                .setMessage("Your Cum /$str reduced by ${boss.prizeAmount}!")
+                .setPositiveButton("FUCK!") { dialog, which ->
+                    dialog.dismiss()
+                    super.onBackPressed()
+                }
+                .setCancelable(false)
+                .show()
+        }
+        else super.onBackPressed()
     }
 
     private fun updateProgress() {
-        loadBoss(bossRikardo)
+        loadBoss(boss)
         b.progressBar.max = boss.bossHP
         b.progressBar.progress = boss.bossHP
-        b.txtHp.text = "${boss.bossHP} / ${bossRikardo.bossHP}"
+        b.txtHp.text = "${boss.bossHP} / $maxHP"
     }
 
     private fun loadBoss(bigBoss: Boss) {

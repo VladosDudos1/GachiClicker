@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.FirebaseFirestore
 import vlados.dudos.gachiclicker.R
 import vlados.dudos.gachiclicker.common.ui.adapters.EventsAdapter
 import vlados.dudos.gachiclicker.common.ui.models.Event
@@ -13,16 +15,7 @@ import vlados.dudos.gachiclicker.databinding.FragmentEventsBinding
 class EventsFragment : Fragment() {
 
     private lateinit var b: FragmentEventsBinding
-    private var listEvents = listOf(
-        Event(
-            0,
-            "Rikardo fight",
-            "Are you ready to smell his underpants?",
-            "https://i0.wp.com/cdn140.picsart.com/300840060233211.png",
-            "Win: +10 Cum /click\nLose: -10 Cum /click",
-            "https://steamuserimages-a.akamaihd.net/ugc/949596928134142092/4C0E46016EE7ABF8440FCA7B9B5AB60EF55AA969/"
-        )
-    )
+    private var listEvents = mutableListOf<Event>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +32,33 @@ class EventsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        updateEvents()
+    }
 
-        b.rvEvents.adapter = EventsAdapter(requireContext(), listEvents)
+    private fun updateEvents() {
+        FirebaseFirestore.getInstance()
+            .collection("Events")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (i in task.result.documents) {
+                        listEvents.add(
+                            Event(
+                                i.data?.get("id").toString().toInt(),
+                                i.data?.get("nameEvent").toString(),
+                                i.data?.get("description").toString(),
+                                i.data?.get("img").toString(),
+                                checkString(i.data?.get("prizeName").toString())
+                            )
+                        )
+                    }
+
+                    b.rvEvents.adapter = EventsAdapter(requireContext(), listEvents)
+                } else Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun checkString(str: String): String {
+        return str.replace("\\n", "\n")
     }
 }

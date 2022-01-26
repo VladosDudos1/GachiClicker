@@ -36,7 +36,7 @@
         android:textAlignment="textStart"
         android:layout_marginEnd="16dp"
         android:textColor="@color/main_text_color"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:ellipsize="end"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
@@ -53,7 +53,7 @@
         android:maxLines="1"
         android:textAlignment="textStart"
         android:textColor="@color/grey_text"
-        android:textSize="16sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

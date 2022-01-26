@@ -12,10 +12,11 @@ import kotlin.math.pow
 object Case {
 
     private val letterList = listOf("", "K", "M", "B", "T", "q", "Q")
-
-    lateinit var bossImage: String
     var clicks: Int = 13
 
+
+    var boss = Boss(1000000, "", 0, false, 5)
+    var bossDockPath = ""
     var currentCum: Long = 0
     var cumPerClick: Int = 1
     var cumPerSecond: Long = 0
@@ -23,9 +24,6 @@ object Case {
     var shopList = mutableListOf<ShopItem>()
 
     const val shopCoef: Double = 1.2
-
-    //Bosses
-    var bossRikardo = Boss(1000, 10, true, 300)
 
     fun updateCPS(num: Int) {
         if (cumPerSecond + num >= 0)
