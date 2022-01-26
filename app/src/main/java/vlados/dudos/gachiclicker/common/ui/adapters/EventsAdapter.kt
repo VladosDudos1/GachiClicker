@@ -31,16 +31,17 @@ class EventsAdapter(private var context: Context, private var list: List<Event>)
         b.descriptionEventTxt.text = list[position].description
         b.prizeEventTxt.text = list[position].prizeName
 
+        if (position == 1) {
+            b.superPowerTxt.visibility = View.GONE
+        }
         Glide.with(context)
             .load(list[position].img)
             .error(R.drawable.block)
             .into(b.imgEvent)
 
         b.layoutEvent.setOnClickListener {
-            when(position){
-                0 -> context.startActivity(Intent(context, BossActivity::class.java))
-            }
             bossDockPath = list[position].nameEvent
+            context.startActivity(Intent(context, BossActivity::class.java))
         }
     }
 
