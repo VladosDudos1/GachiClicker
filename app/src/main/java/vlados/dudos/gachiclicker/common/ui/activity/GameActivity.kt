@@ -18,13 +18,16 @@ import vlados.dudos.gachiclicker.common.Case.cumPerSecond
 import vlados.dudos.gachiclicker.common.Case.currentCum
 import vlados.dudos.gachiclicker.common.Case.cutNum
 import vlados.dudos.gachiclicker.common.Case.saveData
+import vlados.dudos.gachiclicker.common.Case.shopMaxLevel
 import vlados.dudos.gachiclicker.common.Case.updateCurrentCum
 import vlados.dudos.gachiclicker.common.Case.updateShop
 import vlados.dudos.gachiclicker.common.ui.fragments.EventsFragment
 import vlados.dudos.gachiclicker.common.ui.fragments.GameFragment
 import vlados.dudos.gachiclicker.common.ui.fragments.SettingsFragment
 import vlados.dudos.gachiclicker.common.ui.fragments.ShopFragment
+import vlados.dudos.gachiclicker.common.ui.models.Event
 import vlados.dudos.gachiclicker.databinding.ActivityGameBinding
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 class GameActivity : AppCompatActivity() {
@@ -57,6 +60,7 @@ class GameActivity : AppCompatActivity() {
                     changeInfoVisibility(View.VISIBLE)
                 }
                 R.id.events -> {
+                    updateEvents()
                     fragmentTransaction(EventsFragment())
                     changeInfoVisibility(View.GONE)
                 }
@@ -136,8 +140,37 @@ class GameActivity : AppCompatActivity() {
                     cumPerClick = userData?.get("cpc").toString().toInt()
                     cumPerSecond = userData?.get("cps").toString().toLong()
                     currentCum = userData?.get("currentCum").toString().toLong()
+                    shopMaxLevel = try {
+                        userData?.get("maxShopLevel").toString().toInt()
+                    } catch (e: Exception){
+                        5
+                    }
                 } else Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
             }
+    }
+    private fun updateEvents() {
+        FirebaseFirestore.getInstance()
+            .collection("Events")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (i in task.result.documents) {
+                        Case.listEvents.add(
+                            Event(
+                                i.data?.get("id").toString().toInt(),
+                                i.data?.get("nameEvent").toString(),
+                                i.data?.get("description").toString(),
+                                i.data?.get("img").toString(),
+                                checkString(i.data?.get("prizeName").toString())
+                            )
+                        )
+                    }
+                }
+            }
+    }
+
+    private fun checkString(str: String): String {
+        return str.replace("\\n", "\n")
     }
 }
 

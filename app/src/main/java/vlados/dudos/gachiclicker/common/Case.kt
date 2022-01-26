@@ -3,8 +3,8 @@ package vlados.dudos.gachiclicker.common
 import com.google.firebase.firestore.FirebaseFirestore
 import vlados.dudos.gachiclicker.app.App
 import vlados.dudos.gachiclicker.common.ui.models.Boss
+import vlados.dudos.gachiclicker.common.ui.models.Event
 import vlados.dudos.gachiclicker.common.ui.models.ShopItem
-import java.lang.Exception
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import kotlin.math.pow
@@ -12,20 +12,21 @@ import kotlin.math.pow
 object Case {
 
     private val letterList = listOf("", "K", "M", "B", "T", "q", "Q")
+    var listEvents = mutableListOf<Event>()
+    var shopList = mutableListOf<ShopItem>()
 
-    lateinit var bossImage: String
     var clicks: Int = 13
+
+
+    var boss = Boss(1000000, "", 0, false, 5)
+    var bossDockPath = ""
 
     var currentCum: Long = 0
     var cumPerClick: Int = 1
     var cumPerSecond: Long = 0
 
-    var shopList = mutableListOf<ShopItem>()
-
+    var shopMaxLevel: Int = 10
     const val shopCoef: Double = 1.2
-
-    //Bosses
-    var bossRikardo = Boss(1000, 10, true, 300)
 
     fun updateCPS(num: Int) {
         if (cumPerSecond + num >= 0)
@@ -48,6 +49,7 @@ object Case {
         updateUserField("cps", cumPerSecond.toString())
         updateUserField("cpc", cumPerClick.toString())
         updateUserField("currentCum", currentCum.toString())
+        updateUserField("maxShopLevel", shopMaxLevel.toString())
     }
 
     fun cutNum(num: Long): String {
@@ -97,4 +99,10 @@ object Case {
                 }
             }
     }
+
+    fun upgradeShopMaxLevel(num: Int) {
+        FirebaseFirestore.getInstance().collection("Users").document("user:${App.dm.getUserMail()}")
+            .update("maxShopLevel", shopMaxLevel)
+    }
+
 }

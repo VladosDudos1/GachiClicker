@@ -1,20 +1,22 @@
 package vlados.dudos.gachiclicker.common.ui.adapters
 
 import android.content.Context
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import vlados.dudos.gachiclicker.R
 import vlados.dudos.gachiclicker.common.Case.currentCum
+import vlados.dudos.gachiclicker.common.Case.cutNum
+import vlados.dudos.gachiclicker.common.Case.shopMaxLevel
 import vlados.dudos.gachiclicker.common.Case.updateCPC
 import vlados.dudos.gachiclicker.common.Case.updateCPS
 import vlados.dudos.gachiclicker.common.Case.updateCurrentCum
-import vlados.dudos.gachiclicker.R
-import vlados.dudos.gachiclicker.common.Case.cutNum
-import vlados.dudos.gachiclicker.databinding.ShopItemBinding
 import vlados.dudos.gachiclicker.common.ui.models.ShopItem
+import vlados.dudos.gachiclicker.databinding.ShopItemBinding
 
 class ShopAdapter(
     private val context: Context,
@@ -44,8 +46,13 @@ class ShopAdapter(
         b.txtLevel.text = "${shopList[position].level} куплено"
 
         b.buyTxt.setOnClickListener {
-            if (currentCum >= shopList[position].price) {
-                updateCurrentCum(-shopList[position].price)
+            if (shopMaxLevel <= shopList[position].level && position != 0) {
+                Toast.makeText(
+                    context,
+                    "Убейте Billy, чтобы увеличить максимальный уровень магазина",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (currentCum >= shopList[position].price) {
                 onClickListener.click(position, shopList[position].level)
                 when (position) {
                     0 -> {
@@ -53,7 +60,9 @@ class ShopAdapter(
                     }
                     else -> updateCPS(shopList[position].cpsBuff)
                 }
-            } else Toast.makeText(context, "У Fucking Slave не хватает cum", Toast.LENGTH_SHORT).show()
+                updateCurrentCum(-shopList[position].price)
+            } else Toast.makeText(context, "У Fucking Slave не хватает cum", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 

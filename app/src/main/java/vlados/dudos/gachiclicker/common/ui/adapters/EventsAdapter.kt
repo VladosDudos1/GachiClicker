@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import vlados.dudos.gachiclicker.R
-import vlados.dudos.gachiclicker.common.Case.bossImage
+import vlados.dudos.gachiclicker.common.Case.bossDockPath
 import vlados.dudos.gachiclicker.common.ui.activity.BossActivity
 import vlados.dudos.gachiclicker.common.ui.models.Event
 import vlados.dudos.gachiclicker.databinding.EventViewBinding
@@ -31,16 +31,17 @@ class EventsAdapter(private var context: Context, private var list: List<Event>)
         b.descriptionEventTxt.text = list[position].description
         b.prizeEventTxt.text = list[position].prizeName
 
+        if (position == 1) {
+            b.superPowerTxt.visibility = View.GONE
+        }
         Glide.with(context)
             .load(list[position].img)
             .error(R.drawable.block)
             .into(b.imgEvent)
 
         b.layoutEvent.setOnClickListener {
-            when(position){
-                0 -> context.startActivity(Intent(context, BossActivity::class.java))
-            }
-            bossImage = list[position].bossImage
+            bossDockPath = list[position].nameEvent
+            context.startActivity(Intent(context, BossActivity::class.java))
         }
     }
 

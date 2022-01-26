@@ -13,7 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import vlados.dudos.gachiclicker.R
-import vlados.dudos.gachiclicker.app.App
+import vlados.dudos.gachiclicker.common.Case.shopMaxLevel
+import vlados.dudos.gachiclicker.common.Case.upgradeShopMaxLevel
 import vlados.dudos.gachiclicker.common.ui.activity.LoginActivity
 import vlados.dudos.gachiclicker.common.ui.models.User
 import vlados.dudos.gachiclicker.databinding.FragmentRegBinding
@@ -65,6 +66,7 @@ class RegistrationFragment : Fragment() {
                                         (activity as LoginActivity).fragmentTransaction(AuthFragment())
                                     } else makeToast(d.exception!!.message.toString())
                                 }
+                            upgradeShopMaxLevel(10)
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)
                             makeToast("Authentication failed.")
@@ -72,21 +74,6 @@ class RegistrationFragment : Fragment() {
                         }
                     }
             }
-
-//                    .addOnCompleteListener { task ->
-//                        if (task.isSuccessful) {
-//                            val user = User(nick, mail, password, "0", "1", "0")
-//                            FirebaseFirestore.getInstance().collection("Users")
-//                                .add(user)
-//                                .addOnSuccessListener { documentReference ->
-//                                    Log.d(TAG,"DocumentSnapshot added with ID: " + documentReference.id)
-//                                }
-//                                .addOnFailureListener { e ->
-//                                    Log.w(TAG, "Error adding document", e)
-//                                }
-//
-//                        } else makeToast(task.exception!!.message.toString())
-//                    }
         }
     }
 
