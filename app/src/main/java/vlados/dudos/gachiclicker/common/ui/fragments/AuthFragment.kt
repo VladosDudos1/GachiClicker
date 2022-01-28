@@ -73,7 +73,7 @@ class AuthFragment : Fragment() {
 
     private fun checkInput(): Boolean {
         when {
-            !Patterns.EMAIL_ADDRESS.matcher(b.inputEmail.text)
+            !Patterns.EMAIL_ADDRESS.matcher(b.inputEmail.text.toString())
                 .matches() -> makeToast("Input correct email")
             b.inputEmail.text.isNullOrEmpty() -> makeToast("Input your email")
             b.inputPassword.text.isNullOrEmpty() -> makeToast("Input your password")
