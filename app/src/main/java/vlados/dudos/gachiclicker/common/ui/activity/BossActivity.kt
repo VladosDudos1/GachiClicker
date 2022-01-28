@@ -16,6 +16,7 @@ import vlados.dudos.gachiclicker.common.Case.updateCPS
 import vlados.dudos.gachiclicker.common.Case.upgradeShopMaxLevel
 import vlados.dudos.gachiclicker.common.ui.models.Boss
 import vlados.dudos.gachiclicker.databinding.ActivityBossBinding
+import java.lang.Exception
 import kotlin.random.Random.Default.nextInt
 
 
@@ -80,7 +81,7 @@ class BossActivity : AppCompatActivity() {
             if (nextInt(4) == 0 && bossDockPath == "Rikardo") {
 
             } else {
-                boss.bossHP -= 1
+                boss.bossHP = boss.bossHP?.minus(1)
                 b.progressBar.progress -= 1
             }
 
@@ -103,7 +104,7 @@ class BossActivity : AppCompatActivity() {
     }
 
     private fun startTimer() {
-        timer = object : CountDownTimer(boss.timeSec * 1000L, 1000) {
+        timer = object : CountDownTimer(boss.timeSec!! * 1000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 b.timerText.text = ("Seconds Remaining: " + millisUntilFinished / 1000)
                 if (!mediaPlayer.isPlaying)
@@ -139,8 +140,8 @@ class BossActivity : AppCompatActivity() {
 
     private fun updateProgress() {
         loadBoss(boss)
-        b.progressBar.max = boss.bossHP
-        b.progressBar.progress = boss.bossHP
+        b.progressBar.max = boss.bossHP!!
+        b.progressBar.progress = boss.bossHP!!
         b.txtHp.text = "${boss.bossHP} / $maxHP"
     }
 
@@ -153,14 +154,14 @@ class BossActivity : AppCompatActivity() {
 
     private fun bossResult() {
         when {
-            boss.isCpc -> updateCPC(isWin * boss.prizeAmount)
+            boss.isCpc!! -> updateCPC(isWin * boss.prizeAmount!!)
             bossDockPath == "Billy" -> {
                 if (isWin == 1) {
                     shopMaxLevel += 5
                     upgradeShopMaxLevel(shopMaxLevel)
                 }
             }
-            else -> updateCPS(isWin * boss.prizeAmount)
+            else -> updateCPS(isWin * boss.prizeAmount!!)
         }
     }
 }

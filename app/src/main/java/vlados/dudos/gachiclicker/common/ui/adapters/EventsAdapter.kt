@@ -40,7 +40,7 @@ class EventsAdapter(private var context: Context, private var list: List<Event>)
             .into(b.imgEvent)
 
         b.layoutEvent.setOnClickListener {
-            bossDockPath = list[position].nameEvent
+            bossDockPath = list[position].nameEvent!!
             context.startActivity(Intent(context, BossActivity::class.java))
         }
     }

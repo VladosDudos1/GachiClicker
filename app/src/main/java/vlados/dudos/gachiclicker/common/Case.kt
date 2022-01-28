@@ -77,9 +77,9 @@ object Case {
                         .get()
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                level = try{
+                                level = try {
                                     task.result.data?.get("si$iteration").toString().toInt()
-                                } catch (e: Exception){
+                                } catch (e: Exception) {
                                     user.update("si$iteration", 0)
                                     0
                                 }
@@ -104,5 +104,4 @@ object Case {
         FirebaseFirestore.getInstance().collection("Users").document("user:${App.dm.getUserMail()}")
             .update("maxShopLevel", shopMaxLevel)
     }
-
 }
